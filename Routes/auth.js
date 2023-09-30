@@ -15,5 +15,10 @@ app.post('/login', (req, res) => {
 })
 
 
+//  Index ROUTE
+app.get('/', (req, res) => {
+    res.send('Welcome on ecommdaddy.com')
+})
+
 
 module.exports = app;

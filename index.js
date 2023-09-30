@@ -1,36 +1,37 @@
 // dotenv config
 const dotenv = require('dotenv');
-
-// Dabase config
-const db = require('./Database/db');
-
 //express Integration
 const express = require('express');
+// Express Integration
+const app = express();
 
 //dotenv path
 dotenv.config({ path: './enviroment/.env' })
 
-// Express Integration
-const app = express();
+const db = require("./Models");
 
+db.mongoose
+  .connect(db.url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  })
+  .then(() => {
+    console.log("Connected to the database!");
+  })
+  .catch(err => {
+    console.log("Cannot connect to the database!", err);
+    process.exit();
+  });
 
 // Routes
+require("./Routes/users.route")(app);
 app.use('/', require('./routes/auth'));
 
 
-const url = process.env.DBSTRING;
+//const url = process.env.DBSTRING;
 
-
-
-app.listen(3001, async (err) => {
-    if (err) {
-        console.log('error', err);
-        throw err;
-    } else {
-        console.log('Server is integrated succesfully');
-        let result = await db.connect(url);
-        console.log(result, result.db('ecommdaddy').collection('users'));
-        result.close();
-
-    }
+// set port, listen for requests
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}.`);
 });
