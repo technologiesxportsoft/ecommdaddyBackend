@@ -13,7 +13,10 @@ import { AuthService } from './auth.service';
       signOptions: { expiresIn: '1h' },
     }),
   ],
-  providers: [JwtStrategy,AuthService ], // Include your JwtStrategy in the providers array
+  providers: [
+    JwtStrategy,
+    AuthService 
+  ], // Include your JwtStrategy in the providers array
   exports: [AuthService, JwtModule],
 })
 export class AuthModule {}

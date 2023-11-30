@@ -1,7 +1,31 @@
-// auth/jwt-auth.guard.ts
-/* Created By: Rahul 30-11-2023 */
-import { Injectable } from '@nestjs/common';
+// jwt-auth.guard.ts
+
+import { Injectable, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') {}
+export class JwtAuthGuard extends AuthGuard('jwt') {
+  canActivate(context: ExecutionContext) {
+    const request = context.switchToHttp().getRequest();
+
+    // Extract the Origin header from the request
+    const origin = request.headers.origin;
+
+    // Add your domain validation logic here
+    const allowedDomains = ['http://allowed-domain.com', 'https://another-allowed-domain.com'];
+    const isAllowedDomain = allowedDomains.includes(origin);
+
+    // if (!isAllowedDomain) {
+    //   throw new UnauthorizedException('Invalid domain');
+    // }
+
+    return super.canActivate(context);
+  }
+
+  handleRequest(err, user, info) {
+    if (err || !user) {
+      throw err || new UnauthorizedException();
+    }
+    return user;
+  }
+}
