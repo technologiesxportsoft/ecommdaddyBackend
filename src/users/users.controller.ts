@@ -23,6 +23,11 @@ export class UsersController {
   async createUser(@Body() user: User): Promise<User> {
     return this.usersService.createUser(user);
   }
+  //created by rahul 05-12-2023
+  @Post()
+  async createSocialLogin(@Body() user: User): Promise<User> {
+    return this.usersService.createSocialUser(user);
+  }
 
   @Put(':id')
   async updateUser(@Param('id') id: string, @Body() user: User): Promise<User> {

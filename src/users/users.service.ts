@@ -10,13 +10,22 @@ export class UsersService {
   constructor(@InjectModel(User.name) private readonly userModel: Model<UserDocument>) {}
 
   async createUser(user: User): Promise<User> {    
-    const { email } = user;
+    const { email, password, phone } = user;   
+    //validation for email or phone
+    if (!email && !phone) {
+      throw new ConflictException('enter email or phone number!!');
+    }
+
+    // if email entered password required
+    if (email && !password) {
+      throw new ConflictException('password cannot be null!!');
+    }
 
     // Check if the email already exists in the database
     const existingUser = await this.userModel.findOne({ email }).exec();
-    if (existingUser) {
+    if (email && existingUser) {
       throw new ConflictException('Email already exists');
-    }
+    }    
 
     try {
       const createdUser = new this.userModel(user);
@@ -50,6 +59,29 @@ export class UsersService {
       } else {
         throw new BadRequestException('Unable to retrieve user',error.message);
       }
+    }
+  }
+
+  //created by rahul 05-12-2023
+  async createSocialUser(user: User): Promise<User> {    
+    const { email, social } = user;
+
+    // Check if the email already exists in the database
+    const existingUser = await this.userModel.findOne({ email }).exec();
+    if (existingUser) {
+      return existingUser;
+    }
+
+    if (!social) {
+      throw new ConflictException('social type cannot be null!!');
+    }
+
+    try {
+      const createdUser = new this.userModel(user);
+      return await createdUser.save();
+    } catch (error) {
+      console.error('Error creating user:', error.message);
+      throw new BadRequestException('Unable to create user',error.message);
     }
   }
 
