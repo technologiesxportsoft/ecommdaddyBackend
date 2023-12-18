@@ -28,6 +28,12 @@ export class UsersController {
   async createSocialLogin(@Body() user: User): Promise<User> {
     return this.usersService.createSocialUser(user);
   }
+  // created by Rajat rai
+@Post('/login')
+  async logedin(@Body() user: User): Promise<User> {
+    const { email, password } = user;
+    return this.usersService.loginUser(email, password);
+  }
 
   @Put(':id')
   async updateUser(@Param('id') id: string, @Body() user: User): Promise<User> {
