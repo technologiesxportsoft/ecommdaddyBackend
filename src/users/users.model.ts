@@ -9,17 +9,41 @@ export class User extends Document {
   @Prop()
   name: string;
 
-  @Prop({ required: true })
+  @Prop()
   username: string;
 
-  @Prop({ required: true })
+  @Prop()
   email: string;
 
-  @Prop({ required: true })
+  @Prop()
   password: string;
 
   @Prop()
-  phone: string;
+  phone: number;
+
+  @Prop()
+  image: string;
+
+  @Prop({default:0})
+  is_active: number;
+
+  @Prop()
+  type: string;
+
+  @Prop()
+  country: string;
+
+  @Prop()
+  zipcode: number;
+
+  @Prop()
+  social: string;
+
+  @Prop()
+  token: string;
+
+  @Prop()
+  notifications: string;
 
 
 }
