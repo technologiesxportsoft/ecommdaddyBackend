@@ -12,7 +12,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     const origin = request.headers.origin;
 
     // Add your domain validation logic here
-    const allowedDomains = ['http://allowed-domain.com', 'https://another-allowed-domain.com'];
+    const allowedDomains = ['http://localhost:3000/', 'https://another-allowed-domain.com'];
     const isAllowedDomain = allowedDomains.includes(origin);
 
     // if (!isAllowedDomain) {

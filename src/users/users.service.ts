@@ -1,6 +1,6 @@
 // users/users.service.ts
 /* Created By: Rahul 30-11-2023 */
-import { Injectable, ConflictException, NotFoundException, InternalServerErrorException, BadRequestException } from '@nestjs/common';
+import { Injectable, ConflictException, NotFoundException, InternalServerErrorException, BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from './users.model';
@@ -34,6 +34,26 @@ export class UsersService {
       console.error('Error creating user:', error.message);
       throw new BadRequestException('Unable to create user',error.message);
     }
+  }
+
+ async loginUser(email: string, password: string): Promise<User> {
+    if (!email || !password) {
+      throw new BadRequestException('Email and password are required');
+    }
+
+    const user = await this.userModel.findOne({ email }).exec();
+
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    // const isPasswordValid = await user.comparePassword(password);
+
+    // if (!isPasswordValid) {
+    //   throw new UnauthorizedException('Invalid credentials');
+    // }
+
+    return user;
   }
 
   async getAllUsers(): Promise<User[]> {

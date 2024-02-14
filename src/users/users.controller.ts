@@ -1,5 +1,3 @@
-// users/users.controller.ts
-/* Created By: Rahul 28-11-2023 */
 import { Controller, Get, Post, Body, Param, Put, Delete, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './users.model';
@@ -23,10 +21,16 @@ export class UsersController {
   async createUser(@Body() user: User): Promise<User> {
     return this.usersService.createUser(user);
   }
-  //created by rahul 05-12-2023
+
   @Post()
   async createSocialLogin(@Body() user: User): Promise<User> {
     return this.usersService.createSocialUser(user);
+  }
+  // created by Rajat rai
+@Post(':id')
+  async logedin(@Body() user: User): Promise<User> {
+    const { email, password } = user;
+    return this.usersService.loginUser(email, password);
   }
 
   @Put(':id')
