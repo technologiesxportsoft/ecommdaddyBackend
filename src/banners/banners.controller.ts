@@ -1,12 +1,22 @@
+/* eslint-disable prettier/prettier */
 // banners/banners.controller.ts
-/* Created By: Rahul 01-12-2023 */
-import { Controller, Get, Post, Body, Param, Put, Delete, UseGuards } from '@nestjs/common';
+// /* Created By: Rahul 01-12-2023 */
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Put,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { BannersService } from './banners.service';
 import { Banner } from './banners.model';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 @Controller('banners')
 export class BannersController {
-  constructor(private readonly bannersService: BannersService) {}
+  constructor(private readonly bannersService: BannersService) { }
 
   @Get()
   @UseGuards(JwtAuthGuard)
@@ -25,7 +35,10 @@ export class BannersController {
   }
 
   @Put(':id')
-  async updateBanner(@Param('id') id: string, @Body() cat: Banner): Promise<Banner> {
+  async updateBanner(
+    @Param('id') id: string,
+    @Body() cat: Banner,
+  ): Promise<Banner> {
     return this.bannersService.updateBanner(id, cat);
   }
 
